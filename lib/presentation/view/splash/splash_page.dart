@@ -19,15 +19,14 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Card(
+      body: Center(
           child: Lottie.asset(
         'assets/lottie/lightbulb.json',
         repeat: true,
         animate: true,
         width: 200,
       )),
-    ));
+    );
   }
 
   _navigateToNextPage() async {
