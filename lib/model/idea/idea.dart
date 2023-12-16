@@ -10,8 +10,9 @@ class Idea {
 
   Idea({
     required this.title,
+    this.description,
     this.createdAt,
-    this.isFavorite = false,
+    this.categories,
   });
 }
 
