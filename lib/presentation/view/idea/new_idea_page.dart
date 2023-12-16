@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:proyecto_final/model/idea/idea.dart';
+
+class NewIdeaPage extends StatefulWidget {
+  const NewIdeaPage({super.key});
+
+  @override
+  State<NewIdeaPage> createState() => _NewIdeaPageState();
+}
+
+class _NewIdeaPageState extends State<NewIdeaPage> {
+  bool isLoged = false;
+  Idea ideaMock = Idea(
+    title: 'Servicio de entrega de comidas saludables a domicilio',
+    description: 'Descripción de la idea 1',
+    categories: [Category.tecnologia],
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Generador de ideas'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              //
+            },
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text(
+                    ideaMock.title,
+                    style: const TextStyle(fontSize: 24.0),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FilledButton(
+                          onPressed: () {
+                            //
+                          },
+                          child: const Text('Saber más')),
+                      FilledButton.icon(
+                          onPressed: () {
+                            //
+                          },
+                          icon: const Icon(Icons.favorite_border),
+                          label: const Text('Guardar'))
+                    ],
+                  ),
+                ]),
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text("Nueva idea"),
+        onPressed: () {
+          //
+        },
+        backgroundColor: Colors.green.shade200,
+      ),
+      drawerEnableOpenDragGesture: false,
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              // decoration: BoxDecoration(
+              //   color: Colors.blue,
+              // ),
+              child: Text(''),
+            ),
+            ListTile(
+              title: isLoged
+                  ? const Text('Cerrar sesión')
+                  : const Text('Iniciar sesión'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: const Text('Lista de favoritos'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
