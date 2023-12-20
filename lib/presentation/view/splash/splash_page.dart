@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:proyecto_final/presentation/navigation/navigation_routes.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -13,7 +15,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // _navigateToNextPage();
+    _navigateToNextPage();
   }
 
   @override
@@ -34,8 +36,8 @@ class _SplashPageState extends State<SplashPage> {
       const Duration(seconds: 3),
     );
 
-    // if (mounted) {
-    //   context.go(NavigationRoutes.JOKE_CATEGORIES_ROUTE);
-    // }
+    if (mounted) {
+      context.push(NavigationRoutes.NEW_IDEA_ROUTE);
+    }
   }
 }
