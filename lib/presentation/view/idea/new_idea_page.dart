@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proyecto_final/model/idea/idea.dart';
+import 'package:proyecto_final/presentation/navigation/navigation_routes.dart';
 
 class NewIdeaPage extends StatefulWidget {
   const NewIdeaPage({super.key});
@@ -92,15 +94,13 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                   ? const Text('Cerrar sesión')
                   : const Text('Iniciar sesión'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                context.go(NavigationRoutes.LOGIN_ROUTE);
               },
             ),
             ListTile(
               title: const Text('Lista de favoritos'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                context.go(NavigationRoutes.IDEAS_LIST_ROUTE);
               },
             ),
           ],
