@@ -6,5 +6,5 @@ class User {
   String password;
   String? token;
 
-  User({required this.name, required this.password});
+  User({required this.name, required this.password, this.token});
 }
