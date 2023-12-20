@@ -14,7 +14,7 @@ class NavigationRoutes {
   static const String IDEAS_LIST_ROUTE = '$NEW_IDEA_ROUTE/$_IDEAS_LIST_PATH';
   static const String LOGIN_ROUTE = '$NEW_IDEA_ROUTE/$_LOGIN_PATH';
   static const String IDEA_DETAIL_ROUTE =
-      '$NEW_IDEA_ROUTE/$IDEAS_LIST_ROUTE/$_IDEA_DETAIL_PATH';
+      '$IDEAS_LIST_ROUTE/$_IDEA_DETAIL_PATH';
 
   // Paths
   static const String _IDEA_DETAIL_PATH = 'detail';
@@ -34,9 +34,9 @@ final GoRouter router =
     builder: (context, state) => const NewIdeaPage(),
     routes: [
       GoRoute(
-        path: NavigationRoutes._LOGIN_PATH, // /home/login
-        builder: (context, state) => const UserLoginPage(),
-      ),
+          path: NavigationRoutes._LOGIN_PATH, // /home/login
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: UserLoginPage())),
       GoRoute(
         path: NavigationRoutes._IDEAS_LIST_PATH, // /home/ideas
         builder: (context, state) => const IdeasListPage(),
