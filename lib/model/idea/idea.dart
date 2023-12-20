@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class Idea {
-  final id = const Uuid();
+  String id = const Uuid().v4();
   String title;
   String? description;
   bool isFavorite = false;
