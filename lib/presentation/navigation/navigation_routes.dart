@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyecto_final/presentation/view/idea/idea_detail_page.dart';
 import 'package:proyecto_final/presentation/view/idea/ideas_list_page.dart';
@@ -22,34 +23,40 @@ class NavigationRoutes {
   static const String _LOGIN_PATH = 'login';
 }
 
+final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
 // Implementacion de go router
-final GoRouter router =
-    GoRouter(initialLocation: NavigationRoutes.SPLASH_ROUTE, routes: [
-  GoRoute(
-    path: NavigationRoutes.SPLASH_ROUTE,
-    builder: (context, state) => const SplashPage(),
-  ),
-  GoRoute(
-    path: NavigationRoutes.NEW_IDEA_ROUTE, // /home
-    builder: (context, state) => const NewIdeaPage(),
+final GoRouter router = GoRouter(
+    navigatorKey: _navigatorKey,
+    initialLocation: NavigationRoutes.SPLASH_ROUTE,
     routes: [
       GoRoute(
-          path: NavigationRoutes._LOGIN_PATH, // /home/login
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: UserLoginPage())),
+        path: NavigationRoutes.SPLASH_ROUTE,
+        parentNavigatorKey: _navigatorKey,
+        builder: (context, state) => const SplashPage(),
+      ),
       GoRoute(
-        path: NavigationRoutes._IDEAS_LIST_PATH, // /home/ideas
-        builder: (context, state) => const IdeasListPage(),
+        path: NavigationRoutes.NEW_IDEA_ROUTE, // /home
+        parentNavigatorKey: _navigatorKey,
+        builder: (context, state) => const NewIdeaPage(),
         routes: [
           GoRoute(
-            path: NavigationRoutes._IDEA_DETAIL_PATH, // /home/ideas/detail
-            builder: (context, state) => const IdeaDetailPage(),
+              path: NavigationRoutes._LOGIN_PATH, // /home/login
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: UserLoginPage())),
+          GoRoute(
+            path: NavigationRoutes._IDEAS_LIST_PATH, // /home/ideas
+            builder: (context, state) => const IdeasListPage(),
+            routes: [
+              GoRoute(
+                path: NavigationRoutes._IDEA_DETAIL_PATH, // /home/ideas/detail
+                builder: (context, state) => const IdeaDetailPage(),
+              ),
+            ],
           ),
         ],
       ),
-    ],
-  ),
-]);
+    ]);
 
 
 // La ruta del login va como hija de NEW_IDEA_ROUTE??

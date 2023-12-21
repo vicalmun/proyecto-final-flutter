@@ -77,9 +77,6 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
       ),
       drawerEnableOpenDragGesture: false,
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -94,6 +91,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                   ? const Text('Cerrar sesión')
                   : const Text('Iniciar sesión'),
               onTap: () {
+                context.pop();
                 context.go(NavigationRoutes.LOGIN_ROUTE);
               },
             ),
