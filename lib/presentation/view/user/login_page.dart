@@ -1,4 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:proyecto_final/di/app_modules.dart';
+import 'package:proyecto_final/model/resource_state.dart';
+import 'package:proyecto_final/presentation/view/user/viewmodel/user_view_model.dart';
+import 'package:proyecto_final/widget/error/eror_view.dart';
+import 'package:proyecto_final/widget/loading/loading_view.dart';
 
 class UserLoginPage extends StatefulWidget {
   const UserLoginPage({super.key});
@@ -8,14 +15,41 @@ class UserLoginPage extends StatefulWidget {
 }
 
 class _UserLoginPageState extends State<UserLoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // magia de las DI
+  final UserViewModel _userViewModel = inject<UserViewModel>();
 
-  final RegExp emailRegex = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  final RegExp digitRegex = RegExp(r"^\d{*}$");
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // escuchamos el stream
+    _userViewModel.getUserState.stream.listen((event) {
+      switch (event.status) {
+        case Status.LOADING:
+          LoadingView.show(context);
+          setState(() {});
+          break;
+        case Status.SUCCESS:
+          LoadingView.hide();
+          // _token = event.data!;
+          setState(() {});
+          break;
+        case Status.ERROR:
+          LoadingView.hide();
+          ErrorView.show(context, event.error!.toString(), () {
+            log("error");
+          });
+          setState(() {});
+          break;
+        default:
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +83,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                       height: 8,
                     ),
                     TextFormField(
+                      // TODO: hacer lo de mostrar - ocultar contraseña
                       controller: _passwordController,
                       obscureText: true,
                       obscuringCharacter: 'ª',
@@ -58,9 +93,6 @@ class _UserLoginPageState extends State<UserLoginPage> {
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Escribe una contraseña';
-                        }
-                        if (value.length < 8) {
-                          return "El tamaño mínimo es de 8 caracteres";
                         }
                         return null;
                       },
@@ -73,10 +105,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                         onPressed: () {
                           // valida todo el formulario con su key
                           if (_formKey.currentState!.validate()) {
-                            print("""
-            Nombre: ${_nameController.text},
-            pw: ${_passwordController.text},
-            """);
+                            _userViewModel.getUserToken();
                           } else {
                             // Mostrar un mensaje de error
                           }
