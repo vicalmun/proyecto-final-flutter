@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_final/di/app_modules.dart';
 import 'package:proyecto_final/model/resource_state.dart';
 import 'package:proyecto_final/presentation/view/user/viewmodel/user_view_model.dart';
+import 'package:proyecto_final/widget/alert/alert_view.dart';
 import 'package:proyecto_final/widget/error/eror_view.dart';
 import 'package:proyecto_final/widget/loading/loading_view.dart';
 
@@ -37,6 +38,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
         case Status.SUCCESS:
           LoadingView.hide();
           // _token = event.data!;
+          AlertView.show(context, "Sesión iniciada!");
           setState(() {});
           break;
         case Status.ERROR:
