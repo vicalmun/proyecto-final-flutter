@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_final/di/app_modules.dart';
 import 'package:proyecto_final/presentation/navigation/navigation_routes.dart';
 
 void main() {
+  AppModules().setup();
   runApp(const MainApp());
 }
 

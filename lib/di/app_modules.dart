@@ -4,6 +4,8 @@ import 'package:proyecto_final/data/idea/remote/idea_remote_data_source.dart';
 import 'package:proyecto_final/data/user/local/user_local_data_source.dart';
 import 'package:proyecto_final/data/user/remote/user_remote_data_source.dart';
 import 'package:proyecto_final/data/user/user_data_impl.dart';
+import 'package:proyecto_final/domain/user_repository.dart';
+import 'package:proyecto_final/presentation/view/user/viewmodel/user_view_model.dart';
 
 GetIt inject = GetIt.instance;
 
@@ -21,7 +23,8 @@ class AppModules {
   _setupUserModule() {
     inject.registerFactory(() => UserRemoteImpl());
     inject.registerFactory(() => UserLocalImpl());
-    inject.registerFactory(() => UserDataImpl(
+    inject.registerFactory<UserRepository>(() => UserDataImpl(
         userRemoteImpl: inject.get(), userLocalImpl: inject.get()));
+    inject.registerFactory(() => UserViewModel(userRepository: inject.get()));
   }
 }
