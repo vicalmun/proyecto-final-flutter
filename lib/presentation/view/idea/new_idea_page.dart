@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proyecto_final/di/app_modules.dart';
 import 'package:proyecto_final/model/idea/idea.dart';
+import 'package:proyecto_final/model/resource_state.dart';
 import 'package:proyecto_final/presentation/navigation/navigation_routes.dart';
+import 'package:proyecto_final/presentation/view/idea/viewmodel/idea_view_model.dart';
+import 'package:proyecto_final/widget/error/eror_view.dart';
+import 'package:proyecto_final/widget/loading/loading_view.dart';
 
 class NewIdeaPage extends StatefulWidget {
   const NewIdeaPage({super.key});
@@ -11,12 +16,47 @@ class NewIdeaPage extends StatefulWidget {
 }
 
 class _NewIdeaPageState extends State<NewIdeaPage> {
+  final IdeaViewModel _ideaViewModel = inject<IdeaViewModel>();
+
+  Idea? _idea;
+
   bool isLoged = false;
-  Idea ideaMock = Idea(
-    title: 'Servicio de entrega de comidas saludables a domicilio',
-    description: 'Descripción de la idea 1',
-    categories: [Category.tecnologia],
-  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _ideaViewModel.getIdeaState.stream.listen((event) {
+      switch (event.status) {
+        case Status.LOADING:
+          LoadingView.show(context);
+          setState(() {});
+          break;
+        case Status.SUCCESS:
+          LoadingView.hide();
+          _idea = event.data;
+          setState(() {});
+          break;
+        case Status.ERROR:
+          ErrorView.show(context, event.error.toString(), () {
+            _ideaViewModel.getIdea();
+          });
+          LoadingView.hide();
+          setState(() {});
+          break;
+      }
+    });
+
+    // ! OJO: aqui ya no debería ser await por como está implementada la funcion (con el resource state)
+    // _ideaViewModel.getIdea();
+  }
+
+  @override
+  void dispose() {
+    _ideaViewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +81,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Text(
-                    ideaMock.title,
+                    _idea?.title ?? "Cargando...",
                     style: const TextStyle(fontSize: 24.0),
                   ),
                   const SizedBox(height: 10),
@@ -70,8 +110,9 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         label: const Text("Nueva idea"),
-        onPressed: () {
-          //
+        onPressed: () async {
+          await _ideaViewModel.getIdea();
+          setState(() {});
         },
         backgroundColor: Colors.green.shade200,
       ),

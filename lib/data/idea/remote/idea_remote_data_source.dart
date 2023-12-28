@@ -4,9 +4,12 @@ import 'package:proyecto_final/data/idea/remote/model/idea_response.dart';
 class IdeaRemoteImpl {
   final Dio dio = Dio();
 
-  Future<IdeaResponse> getIdea() async {
+  Future<IdeaResponse> getIdea(String token) async {
     final response = await dio.get(
-        'https://vicalmun-openai-middleware-hiberus.onrender.com/api/new-idea');
+        'https://vicalmun-openai-middleware-hiberus.onrender.com/api/new-idea',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }));
 
     if (response.statusCode == 200) {
       final IdeaResponse ideaResponse = IdeaResponse.fromMap(

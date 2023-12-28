@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:proyecto_final/data/idea/idea_data_impl.dart';
+import 'package:proyecto_final/data/idea/local/idea_local_data_source.dart';
 import 'package:proyecto_final/data/idea/remote/idea_remote_data_source.dart';
 import 'package:proyecto_final/data/user/local/user_local_data_source.dart';
 import 'package:proyecto_final/data/user/remote/user_remote_data_source.dart';
@@ -19,9 +20,9 @@ class AppModules {
 
   _setupIdeaModule() {
     inject.registerFactory(() => IdeaRemoteImpl());
-    inject.registerFactory(() => IdeaDataImpl(ideaRemoteImpl: inject.get()));
-    inject.registerFactory<IdeaRepository>(
-        () => IdeaDataImpl(ideaRemoteImpl: inject.get()));
+    inject.registerFactory(() => IdeaLocalImpl());
+    inject.registerFactory<IdeaRepository>(() => IdeaDataImpl(
+        ideaRemoteImpl: inject.get(), ideaLocalImpl: inject.get()));
     inject.registerFactory(() => IdeaViewModel(ideaRepository: inject.get()));
   }
 

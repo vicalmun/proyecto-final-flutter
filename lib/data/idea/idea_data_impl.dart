@@ -1,3 +1,4 @@
+import 'package:proyecto_final/data/idea/local/idea_local_data_source.dart';
 import 'package:proyecto_final/data/idea/remote/idea_remote_data_source.dart';
 import 'package:proyecto_final/data/idea/remote/mapper/idea_remote_local_mapper.dart';
 import 'package:proyecto_final/data/idea/remote/model/idea_response.dart';
@@ -6,13 +7,18 @@ import 'package:proyecto_final/model/idea/idea.dart';
 
 class IdeaDataImpl extends IdeaRepository {
   final IdeaRemoteImpl _ideaRemoteImpl;
+  final IdeaLocalImpl _ideaLocalImpl;
 
-  IdeaDataImpl({required IdeaRemoteImpl ideaRemoteImpl})
-      : _ideaRemoteImpl = ideaRemoteImpl;
+  IdeaDataImpl(
+      {required IdeaRemoteImpl ideaRemoteImpl,
+      required IdeaLocalImpl ideaLocalImpl})
+      : _ideaRemoteImpl = ideaRemoteImpl,
+        _ideaLocalImpl = ideaLocalImpl;
 
   @override
   Future<Idea> getIdea() async {
-    IdeaResponse ideaResponse = await _ideaRemoteImpl.getIdea();
+    final token = await _ideaLocalImpl.getToken();
+    IdeaResponse ideaResponse = await _ideaRemoteImpl.getIdea(token);
     return IdeaMapper.fromRemote(ideaResponse);
   }
 
