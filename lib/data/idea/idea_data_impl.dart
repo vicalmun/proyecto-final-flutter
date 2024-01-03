@@ -22,6 +22,16 @@ class IdeaDataImpl extends IdeaRepository {
     return IdeaMapper.fromRemote(ideaResponse);
   }
 
+  @override
+  Future<Idea> getIdeaDetail(Idea idea) async {
+    Idea idea0 = idea;
+    final token = await _ideaLocalImpl.getToken();
+    IdeaResponse ideaResponse =
+        await _ideaRemoteImpl.getIdeaDetail(token, idea);
+    idea0.description = ideaResponse.message.content;
+    return idea0;
+  }
+
   // TODO: falta hacer el guardar la idea en las shared preferences
   // definir la func en el repo e implementarla en el data impl local
 

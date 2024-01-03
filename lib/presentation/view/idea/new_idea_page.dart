@@ -49,6 +49,8 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
     });
 
     // ! OJO: aqui ya no debería ser await por como está implementada la funcion (con el resource state)
+    // está comentado porque si se hace una petición y no tiene token se queda cargando siempre
+    // TODO: validar que hay token y que sea válido
     // _ideaViewModel.getIdea();
   }
 
@@ -81,7 +83,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Text(
-                    _idea?.title ?? "Cargando...",
+                    _idea?.title ?? "No se han generado ideas",
                     style: const TextStyle(fontSize: 24.0),
                   ),
                   const SizedBox(height: 10),
@@ -89,8 +91,12 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       FilledButton(
-                          onPressed: () {
-                            //
+                          onPressed: () async {
+                            if (_idea == null) {
+                              return;
+                            }
+                            context.go(NavigationRoutes.IDEA_DETAIL_FROM_HOME,
+                                extra: _idea);
                           },
                           child: const Text('Saber más')),
                       FilledButton.icon(

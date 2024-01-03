@@ -23,6 +23,16 @@ class IdeaViewModel {
     });
   }
 
+  getIdeaDetail(Idea idea) async {
+    getIdeaState.add(ResourceState.loading());
+
+    _ideaRepository.getIdeaDetail(idea).then((value) {
+      getIdeaState.add(ResourceState.success(value)); // Idea
+    }).catchError((error) {
+      getIdeaState.add(ResourceState.error(error));
+    });
+  }
+
   void dispose() {
     getIdeaState.close();
   }
