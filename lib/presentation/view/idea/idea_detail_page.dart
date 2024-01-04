@@ -18,6 +18,7 @@ class IdeaDetailPage extends StatefulWidget {
 class _IdeaDetailPageState extends State<IdeaDetailPage> {
   final IdeaViewModel _ideaViewModel = inject<IdeaViewModel>();
 
+  // ignore: unused_field
   Idea? _idea;
 
   @override

@@ -47,11 +47,6 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
           break;
       }
     });
-
-    // ! OJO: aqui ya no debería ser await por como está implementada la funcion (con el resource state)
-    // está comentado porque si se hace una petición y no tiene token se queda cargando siempre
-    // TODO: validar que hay token y que sea válido
-    // _ideaViewModel.getIdea();
   }
 
   @override
@@ -91,6 +86,8 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       FilledButton(
+                          style:
+                              ButtonStyle(backgroundColor: activatedButton()),
                           onPressed: () async {
                             if (_idea == null) {
                               return;
@@ -100,6 +97,8 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                           },
                           child: const Text('Saber más')),
                       FilledButton.icon(
+                          style:
+                              ButtonStyle(backgroundColor: activatedButton()),
                           onPressed: () {
                             if (_idea == null) {
                               return;
@@ -158,5 +157,15 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
         ),
       ),
     );
+  }
+
+  MaterialStateProperty<Color> activatedButton() {
+    MaterialStateProperty<Color> backgrounColor;
+
+    backgrounColor = _idea == null
+        ? MaterialStateProperty.all<Color>(Colors.grey)
+        : MaterialStateProperty.all<Color>(Colors.deepPurple);
+
+    return backgrounColor;
   }
 }
