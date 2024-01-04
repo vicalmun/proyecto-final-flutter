@@ -32,6 +32,21 @@ class IdeaDataImpl extends IdeaRepository {
     return idea0;
   }
 
+  @override
+  Future<void> saveIdea(Idea idea) async {
+    await _ideaLocalImpl.saveIdea(idea);
+  }
+
+  @override
+  Future<List<Idea>> getIdeas() async {
+    return await _ideaLocalImpl.getIdeas();
+  }
+
+  @override
+  Future<void> deleteIdea(Idea idea) async {
+    await _ideaLocalImpl.deleteIdea(idea);
+  }
+
   // TODO: falta hacer el guardar la idea en las shared preferences
   // definir la func en el repo e implementarla en el data impl local
 

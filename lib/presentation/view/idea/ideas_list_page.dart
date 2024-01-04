@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:proyecto_final/di/app_modules.dart';
 import 'package:proyecto_final/model/idea/idea.dart';
 import 'package:proyecto_final/presentation/navigation/navigation_routes.dart';
+import 'package:proyecto_final/presentation/view/idea/viewmodel/idea_view_model.dart';
 
 class IdeasListPage extends StatefulWidget {
   const IdeasListPage({super.key});
@@ -11,23 +13,36 @@ class IdeasListPage extends StatefulWidget {
 }
 
 class _IdeasListPageState extends State<IdeasListPage> {
-  List<Idea> ideasList = [
-    Idea(
-      title: 'Compra-venta de obiliario reacondicionado',
-      description: """
-    La idea de negocio consiste en la venta de mobiliario reacondicionado. En lugar de comprar muebles nuevos, se adquieren muebles usados y se les realiza un proceso de restauración y renovación para dejarlos en óptimas condiciones. Estos muebles reacondicionados se ofrecen a un precio más accesible que los nuevos, lo que permite a los clientes ahorrar dinero en la compra de mobiliario para sus hogares, oficinas u otros espacios.\n\nEl negocio se encargaría de buscar y adquirir muebles usados en buen estado, que puedan ser restaurados y renovados. Luego, se realizaría un proceso de limpieza, reparación de posibles daños y renovación del acabado, para dejarlos como nuevos. Se podrían ofrecer diferentes estilos de mobiliario, desde clásico hasta moderno, para satisfacer los gustos y necesidades de los clientes.\n\nLa venta de estos muebles reacondicionados se realizaría a través de una tienda física y/o una tienda en línea, donde los clientes podrían ver las opciones disponibles y realizar sus compras. Además, se podría ofrecer servicios de entrega y montaje de los muebles, para brindar una experiencia completa y conveniente a los clientes.\n\nEste negocio tendría varias ventajas, como la posibilidad de ofrecer muebles de calidad a precios más accesibles, la contribución al cuidado del medio ambiente al darle una segunda vida a los muebles usados, y la oportunidad de satisfacer la demanda de personas que buscan opciones más económicas sin renunciar a la calidad y el estilo en sus muebles.\n\nEn resumen, la venta de mobiliario reacondicionado es una idea de negocio que busca ofrecer muebles de calidad a precios más accesibles, a través de la restauración y renovación de muebles usados.
-""",
-    ),
-    Idea(
-        title: 'Idea 1',
-        description: 'Descripción de la idea 1',
-        createdAt: DateTime.now()),
-    Idea(title: 'Idea 1', description: 'Descripción de la idea 1'),
-    Idea(title: 'Idea 2', description: 'Descripción de la idea 2'),
-    Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
-    Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
-    Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
-  ];
+// //   List<Idea> ideasList = [
+// //     Idea(
+// //       title: 'Compra-venta de obiliario reacondicionado',
+// //       description: """
+// //     La idea de negocio consiste en la venta de mobiliario reacondicionado. En lugar de comprar muebles nuevos, se adquieren muebles usados y se les realiza un proceso de restauración y renovación para dejarlos en óptimas condiciones. Estos muebles reacondicionados se ofrecen a un precio más accesible que los nuevos, lo que permite a los clientes ahorrar dinero en la compra de mobiliario para sus hogares, oficinas u otros espacios.\n\nEl negocio se encargaría de buscar y adquirir muebles usados en buen estado, que puedan ser restaurados y renovados. Luego, se realizaría un proceso de limpieza, reparación de posibles daños y renovación del acabado, para dejarlos como nuevos. Se podrían ofrecer diferentes estilos de mobiliario, desde clásico hasta moderno, para satisfacer los gustos y necesidades de los clientes.\n\nLa venta de estos muebles reacondicionados se realizaría a través de una tienda física y/o una tienda en línea, donde los clientes podrían ver las opciones disponibles y realizar sus compras. Además, se podría ofrecer servicios de entrega y montaje de los muebles, para brindar una experiencia completa y conveniente a los clientes.\n\nEste negocio tendría varias ventajas, como la posibilidad de ofrecer muebles de calidad a precios más accesibles, la contribución al cuidado del medio ambiente al darle una segunda vida a los muebles usados, y la oportunidad de satisfacer la demanda de personas que buscan opciones más económicas sin renunciar a la calidad y el estilo en sus muebles.\n\nEn resumen, la venta de mobiliario reacondicionado es una idea de negocio que busca ofrecer muebles de calidad a precios más accesibles, a través de la restauración y renovación de muebles usados.
+// // """,
+// //     ),
+// //     Idea(
+// //         title: 'Idea 1',
+// //         description: 'Descripción de la idea 1',
+// //         createdAt: DateTime.now()),
+// //     Idea(title: 'Idea 1', description: 'Descripción de la idea 1'),
+// //     Idea(title: 'Idea 2', description: 'Descripción de la idea 2'),
+// //     Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
+// //     Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
+// //     Idea(title: 'Idea 3', description: 'Descripción de la idea 3'),
+// //   ];
+
+  final IdeaViewModel _ideaViewModel = inject<IdeaViewModel>();
+  List<Idea> ideasList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _ideaViewModel.getIdeas().then((value) {
+      ideasList = value;
+      setState(() {});
+    });
+  }
 
   void updateList(int oldIndex, int newIndex) {
     setState(() {

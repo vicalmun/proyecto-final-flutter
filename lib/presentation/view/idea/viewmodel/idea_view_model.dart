@@ -33,6 +33,19 @@ class IdeaViewModel {
     });
   }
 
+  saveIdea(Idea idea) async {
+    idea.isFavorite = true;
+    _ideaRepository.saveIdea(idea);
+  }
+
+  Future<List<Idea>> getIdeas() async {
+    return await _ideaRepository.getIdeas();
+  }
+
+  deleteIdea(Idea idea) async {
+    await _ideaRepository.deleteIdea(idea);
+  }
+
   void dispose() {
     getIdeaState.close();
   }

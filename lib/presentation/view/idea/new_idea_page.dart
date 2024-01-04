@@ -101,9 +101,15 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                           child: const Text('Saber más')),
                       FilledButton.icon(
                           onPressed: () {
-                            //
+                            if (_idea == null) {
+                              return;
+                            }
+                            _ideaViewModel.saveIdea(_idea!);
+                            setState(() {});
                           },
-                          icon: const Icon(Icons.favorite_border),
+                          icon: _idea?.isFavorite ?? false
+                              ? const Icon(Icons.favorite)
+                              : const Icon(Icons.favorite_border),
                           label: const Text('Guardar'))
                     ],
                   ),
