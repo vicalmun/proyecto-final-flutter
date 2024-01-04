@@ -43,11 +43,9 @@ class IdeaLocalImpl {
   Future<void> deleteIdea(Idea idea) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<Idea> ideasList = await getIdeas();
-
-    ideasList.remove(idea);
+    ideasList.removeWhere((ideaInList) => ideaInList.id == idea.id);
     String ideasJson =
         json.encode(ideasList.map((idea) => idea.toJson()).toList());
-    print(ideasJson);
     await prefs.setString('ideas', ideasJson);
   }
 
@@ -56,4 +54,7 @@ class IdeaLocalImpl {
     List<Idea> ideas = list.map((item) => Idea.fromJson(item)).toList();
     return ideas;
   }
+
+  // todo: update idea, si es favorite se puede actualizar (sería añadir descripción y categorías)
+  // pero se le pasa la idea nueva y se sustituye en la lista de ideas
 }

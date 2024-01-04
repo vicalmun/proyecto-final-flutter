@@ -19,22 +19,7 @@ class _IdeasListPageState extends State<IdeasListPage> {
   @override
   void initState() {
     super.initState();
-    _ideaViewModel.getIdeas().then((value) {
-      ideasList = value;
-      setState(() {});
-    });
-  }
-
-  void updateList(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final Idea item = ideasList.removeAt(oldIndex);
-      ideasList.insert(newIndex, item);
-
-      // todo: debería updatearla también en shapref
-    });
+    getIdeas();
   }
 
   @override
@@ -47,37 +32,62 @@ class _IdeasListPageState extends State<IdeasListPage> {
         child: SizedBox(
             child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ReorderableListView.builder(
-              onReorder: updateList,
+          child: ListView.builder(
               itemCount: ideasList.length,
               itemBuilder: (context, index) {
                 final Idea idea = ideasList[index];
-                return GestureDetector(
-                    key: Key('$index'),
-                    child: ExpansionTile(
-                        collapsedShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        collapsedBackgroundColor: Colors.green.shade200,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor: Colors.green.shade100,
-                        // key: Key('$index'),
-                        title: Text(idea.title,
-                            style: const TextStyle(fontSize: 20)),
-                        children: [
-                          Text(idea.description ?? ''),
-                        ]),
-                    onDoubleTap: () {
-                      context.go(
-                        NavigationRoutes.IDEA_DETAIL_ROUTE,
-                        extra: idea,
+                return Dismissible(
+                  key: Key(idea.id.toString()),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    setState(() {
+                      _ideaViewModel.deleteIdea(idea);
+                      ideasList.removeAt(index);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Idea eliminada')),
                       );
                     });
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: GestureDetector(
+                      key: Key('$index'),
+                      child: ExpansionTile(
+                          collapsedShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          collapsedBackgroundColor: Colors.green.shade200,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: Colors.green.shade100,
+                          // key: Key('$index'),
+                          title: Text(idea.title,
+                              style: const TextStyle(fontSize: 20)),
+                          children: [
+                            Text(idea.description ?? ''),
+                          ]),
+                      onDoubleTap: () {
+                        context.go(
+                          NavigationRoutes.IDEA_DETAIL_ROUTE,
+                          extra: idea,
+                        );
+                      }),
+                );
               }),
         )),
       ),
     );
+  }
+
+  getIdeas() async {
+    _ideaViewModel.getIdeas().then((value) {
+      ideasList = value;
+      setState(() {});
+    });
   }
 }
