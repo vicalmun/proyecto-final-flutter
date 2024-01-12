@@ -31,23 +31,28 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Text('Settings'),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue,
+        child: Center(
+          child: Column(
+            children: [
+              const Spacer(),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.blue,
+                ),
+                onPressed: () {
+                  _userViewModel.deleteToken();
+                  setState(() {
+                    token = null;
+                  });
+                },
+                child: const Text('Borrar token'),
               ),
-              onPressed: () {
-                _userViewModel.deleteToken();
-                setState(() {
-                  token = null;
-                });
-              },
-              child: const Text('Borrar token'),
-            ),
-            Text((token != null) ? 'Hay token' : 'No hay token'),
-          ],
+              Text((token != null) ? 'Hay token' : 'No hay token'),
+              const SizedBox(
+                height: 100,
+              ),
+            ],
+          ),
         ),
       ),
     );
