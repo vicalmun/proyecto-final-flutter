@@ -18,4 +18,19 @@ class UserDataImpl extends UserRepository {
     UserResponse userResponse = await _userRemoteImpl.getUser();
     await _userLocalImpl.saveTokenInStorage(userResponse.token);
   }
+
+  @override
+  Future<String> getTokenFromStorage() async {
+    try {
+      String token = await _userLocalImpl.getToken();
+      return token;
+    } catch (e) {
+      throw Exception('Failed to load token');
+    }
+  }
+
+  @override
+  deleteTokemFromStorage() async {
+    await _userLocalImpl.deleteTokemFromStorage();
+  }
 }

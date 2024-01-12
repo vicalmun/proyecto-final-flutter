@@ -22,6 +22,16 @@ class UserViewModel {
     });
   }
 
+  deleteToken() async {
+    _userRepository.deleteTokemFromStorage();
+  }
+
+  Future<String> getToken() async {
+    String token;
+    token = await _userRepository.getTokenFromStorage();
+    return token;
+  }
+
   void dispose() {
     getUserState.close();
   }

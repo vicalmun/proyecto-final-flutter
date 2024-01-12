@@ -15,4 +15,8 @@ class UserLocalImpl {
       throw Exception('Failed to load token');
     }
   }
+
+  deleteTokemFromStorage() async {
+    await storage.delete(key: "token");
+  }
 }
