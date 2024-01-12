@@ -16,6 +16,8 @@ class UserLoginPage extends StatefulWidget {
 }
 
 class _UserLoginPageState extends State<UserLoginPage> {
+  bool _passwordVisible = false;
+
   // magia de las DI
   final UserViewModel _userViewModel = inject<UserViewModel>();
 
@@ -85,13 +87,24 @@ class _UserLoginPageState extends State<UserLoginPage> {
                       height: 8,
                     ),
                     TextFormField(
-                      // TODO: hacer lo de mostrar - ocultar contraseña
                       controller: _passwordController,
-                      obscureText: true,
-                      obscuringCharacter: 'ª',
-                      decoration: const InputDecoration(
-                          labelText: 'Contraseña',
-                          suffix: Icon(Icons.remove_red_eye)),
+                      obscureText: !_passwordVisible,
+                      decoration: InputDecoration(
+                        labelText: 'Contraseña',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                      ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Escribe una contraseña';
