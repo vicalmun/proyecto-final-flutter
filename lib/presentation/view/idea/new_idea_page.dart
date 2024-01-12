@@ -39,10 +39,10 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
           setState(() {});
           break;
         case Status.ERROR:
-          ErrorView.show(context, event.error.toString(), () {
-            _ideaViewModel.getIdea();
-          });
           LoadingView.hide();
+          ErrorView.show(context, event.error.toString(), () {
+            //
+          });
           setState(() {});
           break;
       }
@@ -64,7 +64,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              //
+              context.go(NavigationRoutes.SETTINGS_ROUTE);
             },
           ),
         ],
@@ -103,13 +103,20 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
                             if (_idea == null) {
                               return;
                             }
+                            if (_ideaViewModel.isIdeaSaved(_idea!)) {
+                              _ideaViewModel.deleteIdea(_idea!);
+                              setState(() {});
+                              return;
+                            }
                             _ideaViewModel.saveIdea(_idea!);
                             setState(() {});
                           },
                           icon: _idea?.isFavorite ?? false
                               ? const Icon(Icons.favorite)
                               : const Icon(Icons.favorite_border),
-                          label: const Text('Guardar'))
+                          label: _idea?.isFavorite ?? false
+                              ? const Text("Guardada")
+                              : const Text('Guardar'))
                     ],
                   ),
                 ]),
@@ -121,10 +128,7 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         label: const Text("Nueva idea"),
-        onPressed: () async {
-          await _ideaViewModel.getIdea();
-          setState(() {});
-        },
+        onPressed: getNewIdea(),
         backgroundColor: Colors.green.shade200,
       ),
       drawerEnableOpenDragGesture: false,
@@ -157,6 +161,12 @@ class _NewIdeaPageState extends State<NewIdeaPage> {
         ),
       ),
     );
+  }
+
+  getNewIdea() {
+    return () {
+      _ideaViewModel.getIdea();
+    };
   }
 
   MaterialStateProperty<Color> activatedButton() {

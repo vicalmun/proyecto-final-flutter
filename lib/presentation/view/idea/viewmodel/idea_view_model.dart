@@ -34,6 +34,10 @@ class IdeaViewModel {
   }
 
   saveIdea(Idea idea) async {
+    if (idea.isFavorite) {
+      deleteIdea(idea);
+      return;
+    }
     idea.isFavorite = true;
     _ideaRepository.saveIdea(idea);
   }
@@ -43,7 +47,20 @@ class IdeaViewModel {
   }
 
   deleteIdea(Idea idea) async {
+    idea.isFavorite = false;
     await _ideaRepository.deleteIdea(idea);
+  }
+
+  // ideaIsPaused(Idea idea) async {
+  //   getIdeaState.add(ResourceState.pause());
+  // }
+
+  bool isIdeaSaved(Idea idea) {
+    return idea.isFavorite;
+  }
+
+  updateIdea(Idea idea) async {
+    await _ideaRepository.updateIdea(idea);
   }
 
   void dispose() {

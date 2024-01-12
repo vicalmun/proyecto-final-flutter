@@ -38,10 +38,10 @@ class _IdeaDetailPageState extends State<IdeaDetailPage> {
           setState(() {});
           break;
         case Status.ERROR:
-          ErrorView.show(context, event.error.toString(), () {
-            _ideaViewModel.getIdea();
-          });
           LoadingView.hide();
+          ErrorView.show(context, event.error.toString(), () {
+            // _ideaViewModel.getIdea();
+          });
           setState(() {});
           break;
       }
@@ -50,6 +50,14 @@ class _IdeaDetailPageState extends State<IdeaDetailPage> {
     if (widget._idea.description == null) {
       _ideaViewModel.getIdeaDetail(widget._idea);
     }
+  }
+
+  @override
+  void dispose() {
+    // actualizar idea en la lista
+    _ideaViewModel.updateIdea(widget._idea);
+    _ideaViewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -64,6 +72,12 @@ class _IdeaDetailPageState extends State<IdeaDetailPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Text(widget._idea.title,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(widget._idea.description ?? ''),
                 Text(widget._idea.categories
                         ?.map((e) => e.toString())

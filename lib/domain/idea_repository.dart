@@ -10,4 +10,6 @@ abstract class IdeaRepository {
   Future<List<Idea>> getIdeas();
 
   Future<void> deleteIdea(Idea idea);
+
+  Future<void> updateIdea(Idea idea);
 }

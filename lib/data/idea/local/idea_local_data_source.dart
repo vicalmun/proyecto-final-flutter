@@ -55,6 +55,16 @@ class IdeaLocalImpl {
     return ideas;
   }
 
+  Future<void> updateIdea(Idea idea) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Idea> ideasList = await getIdeas();
+    int index = ideasList.indexWhere((ideaInList) => ideaInList.id == idea.id);
+    ideasList[index] = idea;
+    String ideasJson =
+        json.encode(ideasList.map((idea) => idea.toJson()).toList());
+    await prefs.setString('ideas', ideasJson);
+  }
+
   // todo: update idea, si es favorite se puede actualizar (sería añadir descripción y categorías)
   // pero se le pasa la idea nueva y se sustituye en la lista de ideas
 }
