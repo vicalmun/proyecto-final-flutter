@@ -51,10 +51,4 @@ class IdeaDataImpl extends IdeaRepository {
   Future<void> updateIdea(Idea idea) async {
     await _ideaLocalImpl.updateIdea(idea);
   }
-
-  // TODO: falta hacer el guardar la idea en las shared preferences
-  // definir la func en el repo e implementarla en el data impl local
-
-  // TODO: recuperar la lista de ideas guardadas en las shared preferences al iniciar la app
-  // definir la func en el repo e implementarla en el data impl local
 }
